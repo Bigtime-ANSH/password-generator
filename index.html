@@ -844,7 +844,7 @@
                         <label class="checkbox"><input type="checkbox" id="noConsecutive"> No 3+ repeats</label>
                         <label class="checkbox"><input type="checkbox" id="noSequential"> No sequences</label>
                         <label class="checkbox"><input type="checkbox" id="noKeyboard"> No keyboard patterns</label>
-                        <label class="checkbox"><input type="checkbox" id="requireAll"> Require all types</label>
+                        <label class="checkbox"><input type="checkbox" id="ensureEachType" checked> Ensure each type appears</label>
                     </div>
                 </div>
             </div>
@@ -864,7 +864,7 @@
 
         <!-- Footer -->
         <footer>
-            <p>Open Source • <a href="https://github.com" target="_blank" rel="noopener">View Code</a> • Your secret phrase never leaves your device</p>
+            <p>Open Source • <a href="https://github.com/Bigtime-ANSH/password-generator/" target="_blank" rel="noopener">View Code</a> • Your secret phrase never leaves your device</p>
         </footer>
     </div>
 
@@ -941,7 +941,7 @@
         const noConsecutiveEl = document.getElementById('noConsecutive');
         const noSequentialEl = document.getElementById('noSequential');
         const noKeyboardEl = document.getElementById('noKeyboard');
-        const requireAllEl = document.getElementById('requireAll');
+        const ensureEachTypeEl = document.getElementById('ensureEachType');
 
         // Character sets
         const CHARS = {
@@ -999,26 +999,6 @@
             }
         });
 
-        // "Require all types" functionality
-        requireAllEl.addEventListener('change', (e) => {
-            const characterTypeCheckboxes = [uppercaseEl, lowercaseEl, numbersEl, symbolsEl];
-            const characterTypeLabels = document.querySelectorAll('.advanced-group:first-child .checkbox');
-            
-            if (e.target.checked) {
-                // Check and lock all character type checkboxes
-                characterTypeCheckboxes.forEach(checkbox => {
-                    checkbox.checked = true;
-                    checkbox.disabled = true;
-                });
-                characterTypeLabels.forEach(label => label.classList.add('locked'));
-            } else {
-                // Unlock all character type checkboxes
-                characterTypeCheckboxes.forEach(checkbox => {
-                    checkbox.disabled = false;
-                });
-                characterTypeLabels.forEach(label => label.classList.remove('locked'));
-            }
-        });
 
         // Keyboard shortcuts
         websiteEl.addEventListener('keypress', e => e.key === 'Enter' && generate());
@@ -1108,7 +1088,7 @@
             if (noSequentialEl.checked && SEQUENTIAL.some(p => lower.includes(p))) return false;
             if (noKeyboardEl.checked && KEYBOARD.some(p => lower.includes(p))) return false;
 
-            if (requireAllEl.checked) {
+            if (ensureEachTypeEl.checked) {
                 if (uppercaseEl.checked && !/[A-Z]/.test(password)) return false;
                 if (lowercaseEl.checked && !/[a-z]/.test(password)) return false;
                 if (numbersEl.checked && !/[0-9]/.test(password)) return false;
